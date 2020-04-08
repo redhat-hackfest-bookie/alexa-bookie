@@ -49,4 +49,12 @@ public class BookieResource {
         return Response.ok(new MatchResult(simulationResultDto.team.get(0).name, simulationResultDto.team.get(1).name,
                 simulationResultDto.team.get(0).score, simulationResultDto.team.get(1).score)).build();
     }
+
+    @GET
+    @Path("{sport}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeams(@PathParam("sport") String sport) {
+        Sport sportDto = compughterRatingsService.getSport(appId, apiKey, sport);
+        return Response.ok(sportDto.team).build();
+    }
 }
