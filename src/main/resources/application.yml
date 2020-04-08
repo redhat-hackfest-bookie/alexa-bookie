@@ -1,4 +1,13 @@
 quarkus:
+  knative:
+    ports:
+      http1:
+        container-port=8080:
+  kubernetes:
+    deployment-target: knative
+    ports:
+      http1:
+        container-port=8080:
   log:
     category:
       "org.jboss.resteasy.tracing.api.RESTEasyTracing":
