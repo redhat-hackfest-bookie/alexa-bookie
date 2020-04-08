@@ -1,0 +1,24 @@
+--- target/kubernetes/knative.yml	2020-04-08 18:14:19.668589974 -0300
++++ target/kubernetes/knative.patched.yml	2020-04-08 18:19:52.254794704 -0300
+@@ -32,7 +32,6 @@
+           failureThreshold: 3
+           httpGet:
+             path: "/health/live"
+-            port: 8080
+             scheme: "HTTP"
+           initialDelaySeconds: 0
+           periodSeconds: 30
+@@ -41,13 +40,11 @@
+         name: "hackfest-alexa-bookie"
+         ports:
+         - containerPort: 8080
+-          name: "http"
+           protocol: "TCP"
+         readinessProbe:
+           failureThreshold: 3
+           httpGet:
+             path: "/health/ready"
+-            port: 8080
+             scheme: "HTTP"
+           initialDelaySeconds: 0
+           periodSeconds: 30
