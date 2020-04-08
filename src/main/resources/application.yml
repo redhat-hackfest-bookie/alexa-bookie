@@ -1,4 +1,6 @@
 quarkus:
+  http:
+    cors: true
   log:
     category:
       "org.jboss.resteasy.tracing.api.RESTEasyTracing":
