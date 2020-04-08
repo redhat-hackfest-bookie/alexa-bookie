@@ -1,13 +1,17 @@
 quarkus:
+  container-image:
+    registry: image-registry.openshift-image-registry.svc:5000
+    group: alexa-knative
+  kubernetes:
+    deployment-target: knative, openshift
   knative:
     ports:
       http1:
-        container-port=8080:
-  kubernetes:
-    deployment-target: knative
+        container-port: 8080
+  openshift:
     ports:
       http1:
-        container-port=8080:
+        container-port: 8080
   log:
     category:
       "org.jboss.resteasy.tracing.api.RESTEasyTracing":
