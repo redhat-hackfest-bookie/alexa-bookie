@@ -7,15 +7,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-public class BackendResurceTest {
+public class BookieResourceTest {
 
     @Test
     public void testHelloEndpoint() {
-        given()
-          .when().get("/api/v1/backend")
-          .then()
-             .statusCode(200)
-             .body(is("hello"));
+
     }
 
 }
