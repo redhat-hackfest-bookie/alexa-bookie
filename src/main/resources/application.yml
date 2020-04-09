@@ -20,6 +20,19 @@ quarkus:
           level: FINE
 compughter-ratings/mp-rest/url: http://hackfest-api-amendment-alexa.apps.cluster-fed2.fed2.example.opentlc.com
 compughter-ratings/mp-rest/scope: javax.inject.Singleton
+prediction/mp-rest/url: http://spring-data-jpa-quickstart-alexa.apps.cluster-fed2.fed2.example.opentlc.com
+prediction/mp-rest/scope: javax.inject.Singleton
 app:
   app-id: IUGe17QzIejCMI4KdQ11vLhAfBMx7uP7
   api-key: FsvhlOuyRBkTpWKxkrq4cJLyFZ1omdNT
+
+#mp:
+#  messaging:
+#    outgoing:
+#      predictions:
+#        connector: smallrye-kafka
+#        topic: predictions
+#        value:
+#          serializer: io.vertx.kafka.client.serialization.JsonObjectSerializer
+#        "boostrap.servers": kafka-kafka-bootstrap:9092
+     
