@@ -12,6 +12,7 @@ var getPredictionButton = $('#getPredictionButton');
 var predictionContainer = $('#predictionContainer');
 var predictionText = $('#predictionText');
 
+var lastStatRefreshSpan = $('#lastStatRefreshSpan');
 var totalRequestsSpan = $('#totalRequestsSpan');
 var requestsPerSportPercentageDiv = $('#requestsPerSportPercentageDiv');
 var requestsPerSportTableBody = $('#requestsPerSportTableBody');
@@ -229,6 +230,10 @@ function reloadStatistics(){
 	lastReloadFinished = true;
 }
 
+function updateLastReloadTie(){
+	lastStatRefreshSpan.text(new Date().toISOString());
+}
+
 function reloadSportStats(){
 	makeCallToStatsService("sports", function(sports, status){
 		console.log("Got sports stats result: " + sports);
@@ -251,6 +256,8 @@ function reloadSportStats(){
 			
 			lastColor = cycleColor(lastColor);
 		});
+		
+		updateLastReloadTie();
 	});
 }
 
@@ -259,8 +266,6 @@ function cycleColor(last){
 		case "bg-success":
 			return "bg-info";
 		case "bg-info":
-			return "bg-warning";
-		case "bg-warning":
 			return "bg-danger";
 		default:
 			return "bg-success";
