@@ -10,3 +10,8 @@
 #predictionContainer {
 	display: none;
 }
+
+#requestsPerSportPercentageDiv {
+	height: 45px;
+	font-weight: bold;
+}
