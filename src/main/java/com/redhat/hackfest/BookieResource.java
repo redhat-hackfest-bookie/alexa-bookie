@@ -1,11 +1,6 @@
 package com.redhat.hackfest;
 
-import com.redhat.hackfest.source.CompughterRatingsService;
-import com.redhat.hackfest.source.dto.SimulationResult;
-import com.redhat.hackfest.source.dto.Sport;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.logging.Logger;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -14,7 +9,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Objects;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.logging.Logger;
+
+import com.redhat.hackfest.source.CompughterRatingsService;
+import com.redhat.hackfest.source.dto.SimulationResult;
+import com.redhat.hackfest.source.dto.Sport;
 
 @Path("/api/v1/bookie")
 public class BookieResource {
@@ -30,6 +34,9 @@ public class BookieResource {
     @Inject
     @RestClient
     CompughterRatingsService compughterRatingsService;
+    
+    @Inject
+    @Channel("predictions") Emitter<MatchResult> emitter;
 
     @GET
     @Path("/{sport}/{homeTeam}/{awayTeam}")
@@ -45,9 +52,13 @@ public class BookieResource {
 
         SimulationResult simulationResultDto = compughterRatingsService
                 .getSimulation(appId, apiKey, sport, homeTeam, awayTeam);
+        
+        MatchResult matchResult = new MatchResult(simulationResultDto.team.get(0).name, simulationResultDto.team.get(1).name,
+                simulationResultDto.team.get(0).score, simulationResultDto.team.get(1).score);
+        
+        emitter.send(matchResult);
 
-        return Response.ok(new MatchResult(simulationResultDto.team.get(0).name, simulationResultDto.team.get(1).name,
-                simulationResultDto.team.get(0).score, simulationResultDto.team.get(1).score)).build();
+        return Response.ok(matchResult).build();
     }
 
     @GET
