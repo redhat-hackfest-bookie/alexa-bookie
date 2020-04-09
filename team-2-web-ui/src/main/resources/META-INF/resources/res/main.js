@@ -41,10 +41,6 @@ var spinnerOpts = {
 
 var spinner = new Spinner(spinnerOpts);
 
-
-
-var runningSpinner = null;
-
 console.log("Page loaded!");
 
 $(document).ready(function() {
@@ -109,6 +105,8 @@ function populateTeamSelects(){
 	
 	if(selectedSport == ""){
 		console.log("No sport selected.");
+		
+		stopSpinner();
 		return;
 	}
 	
@@ -145,21 +143,25 @@ function getBookiePrediction(){
 	if(selectedSport == ""){
 		console.log("No sport selected.");
 		updatePredictionResult("No sport selected.");
+		stopSpinner();
 		return;
 	}
 	if(selectedHome == ""){
 		console.log("No home team selected.");
 		updatePredictionResult("No home team selected.");
+		stopSpinner();
 		return;
 	}
 	if(selectedAway == ""){
 		console.log("No away team selected.");
 		updatePredictionResult("No away team selected.");
+		stopSpinner();
 		return;
 	}
 	if(selectedHome == selectedAway){
 		console.log("Same team selected for home and away.");
 		updatePredictionResult("A team can't play against itself.");
+		stopSpinner();
 		return;
 	}
 	
