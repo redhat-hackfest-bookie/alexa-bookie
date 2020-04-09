@@ -1,6 +1,16 @@
 package com.redhat.hackfest;
 
-import java.util.Objects;
+import com.redhat.hackfest.event.Prediction;
+import com.redhat.hackfest.event.PredictionEventClient;
+import com.redhat.hackfest.source.CompughterRatingsService;
+import com.redhat.hackfest.source.dto.SimulationResult;
+import com.redhat.hackfest.source.dto.Sport;
+import io.vertx.core.json.JsonObject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -9,16 +19,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.eclipse.microprofile.reactive.messaging.Emitter;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.logging.Logger;
-
-import com.redhat.hackfest.source.CompughterRatingsService;
-import com.redhat.hackfest.source.dto.SimulationResult;
-import com.redhat.hackfest.source.dto.Sport;
+import java.util.Objects;
 
 @Path("/api/v1/bookie")
 public class BookieResource {
@@ -34,9 +35,10 @@ public class BookieResource {
     @Inject
     @RestClient
     CompughterRatingsService compughterRatingsService;
-    
+
     @Inject
-    @Channel("predictions") Emitter<MatchResult> emitter;
+    @RestClient
+    PredictionEventClient predictionEventClient;
 
     @GET
     @Path("/{sport}/{homeTeam}/{awayTeam}")
@@ -52,11 +54,16 @@ public class BookieResource {
 
         SimulationResult simulationResultDto = compughterRatingsService
                 .getSimulation(appId, apiKey, sport, homeTeam, awayTeam);
-        
-        MatchResult matchResult = new MatchResult(simulationResultDto.team.get(0).name, simulationResultDto.team.get(1).name,
+
+        MatchResult matchResult = new MatchResult(simulationResultDto.team.get(0).name,
+                simulationResultDto.team.get(1).name,
                 simulationResultDto.team.get(0).score, simulationResultDto.team.get(1).score);
-        
-        emitter.send(matchResult);
+
+        try {
+            predictionEventClient.postEvent(sport);
+        } catch (Exception e) {
+            logger.errorv(e, "Error while sending msg to event service {0}", e.getMessage());
+        }
 
         return Response.ok(matchResult).build();
     }
