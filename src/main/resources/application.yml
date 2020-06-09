@@ -3,7 +3,7 @@ quarkus:
     cors: true
   container-image:
     registry: image-registry.openshift-image-registry.svc:5000
-    group: alexa
+    group: bookie
   kubernetes:
     deployment-target: knative, openshift
   knative:
@@ -18,13 +18,13 @@ quarkus:
     category:
       "org.jboss.resteasy.tracing.api.RESTEasyTracing":
           level: FINE
-compughter-ratings/mp-rest/url: http://hackfest-api-amendment-alexa.apps.cluster-fed2.fed2.example.opentlc.com
+compughter-ratings/mp-rest/url: http://hackfest-api-amendment-bookie.apps.cluster-ae02.ae02.sandbox1545.opentlc.com
 compughter-ratings/mp-rest/scope: javax.inject.Singleton
-prediction/mp-rest/url: http://spring-data-jpa-quickstart-alexa.apps.cluster-fed2.fed2.example.opentlc.com
+prediction/mp-rest/url: http://spring-data-jpa-quickstart-bookie.apps.cluster-ae02.ae02.sandbox1545.opentlc.com
 prediction/mp-rest/scope: javax.inject.Singleton
 app:
-  app-id: IUGe17QzIejCMI4KdQ11vLhAfBMx7uP7
-  api-key: FsvhlOuyRBkTpWKxkrq4cJLyFZ1omdNT
+  app-id: zlKotUlt4cMwTSVd3yhLmz7vmZlkEoP5
+  api-key: lcuYc0RnCaBDUNQXA0vCc390kelTKrNI
 
 #mp:
 #  messaging:

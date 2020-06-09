@@ -1,5 +1,8 @@
 package com.redhat.hackfest;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class MatchResult {
     public String home_team;
     public String away_team;

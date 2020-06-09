@@ -1,5 +1,8 @@
 package com.redhat.hackfest.event;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class Prediction {
     public Long id;
     public int homeScore;
